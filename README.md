@@ -25,7 +25,7 @@ GPL-3.0-or-later license and attribution are preserved.
 
 ## Features
 
-- Translation history
+- Persistent translation history, searchable and available after restarts
 - Automatic language detection
 - Text to speech
 - Clipboard buttons

@@ -60,6 +60,8 @@ subdir('search_provider')
 sources = [
   '__init__.py',
   'asyncio.py',
+  'history.py',
+  'history_dialog.py',
   'languages.py',
   'main.py',
   'net.py',

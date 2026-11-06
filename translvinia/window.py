@@ -12,6 +12,8 @@ from gi.repository import Adw, Gdk, Gio, GLib, GObject, Gst, Gtk, Spelling
 
 from translvinia.asyncio import background_task
 from translvinia.define import APP_ID, PROFILE, RES_PATH, TRANS_NUMBER
+from translvinia.history import HistoryStore, provider_display_name
+from translvinia.history_dialog import HistoryDialog
 from translvinia.languages import LanguagesListModel
 from translvinia.providers import (
     TRANSLATORS,
@@ -123,6 +125,9 @@ class TranslviniaWindow(Adw.ApplicationWindow):
         # Application object
         self.app: Adw.Application = kwargs["application"]
 
+        # Persistent translation history (loaded lazily on first use)
+        self.history_store = HistoryStore()
+
         # GStreamer playbin object and related setup
         self.player = Gst.ElementFactory.make("playbin", "player")
         if self.player:
@@ -144,6 +149,10 @@ class TranslviniaWindow(Adw.ApplicationWindow):
         forward_action.props.enabled = False
         forward_action.connect("activate", self._on_forward_action)
         self.add_action(forward_action)
+
+        history_action = Gio.SimpleAction(name="history")
+        history_action.connect("activate", self._on_history_action)
+        self.add_action(history_action)
 
         switch_action = Gio.SimpleAction(name="switch")
         switch_action.connect("activate", self._on_switch_action)
@@ -756,6 +765,18 @@ class TranslviniaWindow(Adw.ApplicationWindow):
             self._check_mistakes()
             self._check_pronunciation()
 
+    def _on_history_action(self, *_args):
+        """Open the complete persistent translation history."""
+        HistoryDialog(self.history_store.entries(), self)
+
+    def _record_history(self, translation: Translation):
+        """Persist a completed translation without interrupting the UI on failure."""
+        provider = provider_display_name(self.provider["trans"])
+        try:
+            self.history_store.record(translation, provider=provider)
+        except OSError as exc:
+            logging.error("Could not save translation history: %s", exc)
+
     def _on_switch_action(self, *_args):
         # Get variables
         self.langs_button_box.props.sensitive = False
@@ -1193,6 +1214,7 @@ class TranslviniaWindow(Adw.ApplicationWindow):
 
                 # Finally, translation is saved in history
                 self.add_history_entry(translation)
+                self._record_history(translation)
 
                 self._check_mistakes()
                 self._check_pronunciation()

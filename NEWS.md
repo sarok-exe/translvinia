@@ -1,6 +1,8 @@
 ### In Development
 
 - Forked as Translvinia
+- Add persistent, searchable translation history with copy buttons; completed
+  translations are kept in `~/.local/share/translvinia/history/history.jsonl`
 - Add request timeouts and raise connection limits so stalled requests cannot
   block later translations
 - Retry transient HTTP statuses and network failures with capped exponential

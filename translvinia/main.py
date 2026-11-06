@@ -154,6 +154,7 @@ class Translvinia(Adw.Application):
 
         self.set_accels_for_action("win.back", ["<Alt>Left"])
         self.set_accels_for_action("win.forward", ["<Alt>Right"])
+        self.set_accels_for_action("win.history", ["<Primary>H"])
         self.set_accels_for_action("win.switch", ["<Primary>S"])
         self.set_accels_for_action("win.from", ["<Primary>F"])
         self.set_accels_for_action("win.to", ["<Primary>T"])

@@ -4,6 +4,6 @@
 // see the documentation: https://zed.dev/docs/configuring-zed#settings-files
 {
   "file_types": {
-    "Python": ["dialect.in", "define.in", "search_provider.in"]
+    "Python": ["translvinia.in", "define.in", "search_provider.in"]
   }
 }

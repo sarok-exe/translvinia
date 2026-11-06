@@ -1,6 +1,6 @@
 ## Development environment
 
-When developing Dialect it is encouraged to use the [uv](https://docs.astral.sh/uv/) project manager.
+When developing Translvinia it is encouraged to use the [uv](https://docs.astral.sh/uv/) project manager.
 
 After installing uv, run `uv sync` to create or sync a venv with the projects dependencies.
 

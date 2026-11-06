@@ -1,5 +1,15 @@
 ### In Development
 
+- Forked as Translvinia
+- Add request timeouts and raise connection limits so stalled requests cannot
+  block later translations
+- Retry transient HTTP statuses and network failures with capped exponential
+  backoff and jitter, honouring `Retry-After`
+- Show a persistent inline error banner with a Retry action when translation
+  fails, and handle malformed or non-JSON provider responses
+- Discard stale translation results when a newer request starts
+- Fix exception handling and repeated-translation detection bugs
+
 ### 2.6.1
 
 - Fix search provider
@@ -73,7 +83,7 @@
 - Added Lingva Translate support
 - Google Translate module rewritten from scratch to not rely on external libraries and improve reliability.
 - GNOME Search Provider improvements
-- APP ID changed to app.drey.Dialect
+- APP ID changed to io.github.sarok_exe.Translvinia
 - Added API keys support for LibreTranslate
 - Added translation suggestions support for LibreTranslate
 - Fixed proxies by rewriting the http backend

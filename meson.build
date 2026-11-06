@@ -1,5 +1,5 @@
 project(
-  'dialect',
+  'translvinia',
   version: '2.6.1',
   meson_version: '>= 0.59.0',
   default_options: [
@@ -10,9 +10,9 @@ project(
 python = import('python')
 i18n = import('i18n')
 
-base_id = 'app.drey.Dialect'
+base_id = 'io.github.sarok_exe.Translvinia'
 pkgdatadir = join_paths(get_option('prefix'), get_option('datadir'), meson.project_name())
-moduledir = join_paths(pkgdatadir, 'dialect')
+moduledir = join_paths(pkgdatadir, 'translvinia')
 
 if get_option('profile') == 'development'
   profile = 'Devel'
@@ -23,12 +23,12 @@ if get_option('profile') == 'development'
     version_suffix = '-@0@'.format(vcs_tag)
   endif
   application_id = '@0@.@1@'.format(base_id, profile)
-  object_path = '/app/drey/Dialect/Devel/SearchProvider'
+  object_path = '/io/github/sarok_exe/Translvinia/Devel/SearchProvider'
 else
   profile = ''
   version_suffix = ''
   application_id = base_id
-  object_path = '/app/drey/Dialect/SearchProvider'
+  object_path = '/io/github/sarok_exe/Translvinia/SearchProvider'
 endif
 
 conf = configuration_data()
@@ -64,8 +64,23 @@ dependency('libspelling-1')
 dependency('pygobject-3.0', version: '>= 3.51')
 
 subdir('data')
-subdir('dialect')
+subdir('translvinia')
 subdir('po')
+
+test(
+  'translvinia-python',
+  py_installation,
+  args: [
+    '-m',
+    'unittest',
+    'discover',
+    '-s',
+    join_paths(meson.project_source_root(), 'tests'),
+    '-v',
+  ],
+  env: ['PYTHONPATH=' + meson.project_source_root()],
+  timeout: 60,
+)
 
 gnome.post_install(
   gtk_update_icon_cache: true,

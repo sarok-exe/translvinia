@@ -69,11 +69,25 @@ pip install gtts
 
 ### Building from Git
 
+Install for the current user without root:
+
 ```bash
 git clone --recurse-submodules https://github.com/sarok-exe/translvinia.git
-cd Translvinia
-meson builddir --prefix=/usr/local
-sudo ninja -C builddir install
+cd translvinia
+meson setup builddir --prefix="$HOME/.local"
+meson compile -C builddir
+meson install -C builddir
+```
+
+This installs the launcher to `~/.local/bin/translvinia`, the desktop entry
+to `~/.local/share/applications`, and the icons and GSettings schema under
+`~/.local/share`. Make sure `~/.local/bin` is on your `PATH`.
+
+For a system-wide install:
+
+```bash
+meson setup builddir --prefix=/usr/local
+sudo meson install -C builddir
 ```
 
 For testing and development purposes, you may run a local build:
